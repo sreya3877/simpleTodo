@@ -1,6 +1,5 @@
-import React from 'react'
-import './App.css'
 import SimpleTodos from './components/SimpleTodos'
+import './App.css'
 
 const App = () => <SimpleTodos />
 

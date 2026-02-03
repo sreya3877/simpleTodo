@@ -1,18 +1,47 @@
-import React from 'react'
+import {useState} from 'react'
 import './index.css'
 
 const TodoItem = props => {
-  const {todoDetails, onDeleteTodo} = props
-  const {id, title} = todoDetails
+  const {todoDetails, deleteTodo, toggleComplete, updateTodoTitle} = props
+  const {id, title, isCompleted} = todoDetails
 
-  const handleDelete = () => {
-    onDeleteTodo(id)
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedTitle, setEditedTitle] = useState(title)
+
+  const onSave = () => {
+    updateTodoTitle(id, editedTitle)
+    setIsEditing(false)
   }
 
   return (
     <li className="todo-item">
-      <p className="todo-title">{title}</p>
-      <button className="delete-button" onClick={handleDelete}>
+      <input
+        type="checkbox"
+        checked={isCompleted}
+        onChange={() => toggleComplete(id)}
+      />
+
+      {isEditing ? (
+        <input
+          type="text"
+          value={editedTitle}
+          onChange={event => setEditedTitle(event.target.value)}
+        />
+      ) : (
+        <p className={`title ${isCompleted ? 'completed' : ''}`}>{title}</p>
+      )}
+
+      {isEditing ? (
+        <button type="button" onClick={onSave}>
+          Save
+        </button>
+      ) : (
+        <button type="button" onClick={() => setIsEditing(true)}>
+          Edit
+        </button>
+      )}
+
+      <button type="button" onClick={() => deleteTodo(id)}>
         Delete
       </button>
     </li>
